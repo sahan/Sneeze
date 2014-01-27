@@ -1,4 +1,4 @@
-package com.lonepulse.sneeze;
+package com.lonepulse.sneeze.reflection;
 
 /*
  * #%L
@@ -19,9 +19,6 @@ package com.lonepulse.sneeze;
  * limitations under the License.
  * #L%
  */
-
-import static com.lonepulse.sneeze.Assert.assertNotEmpty;
-import static com.lonepulse.sneeze.Assert.assertNotNull;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -124,14 +121,14 @@ public final class Fields implements Iterable<Field> {
 	
 	private Fields(Field[] fields) {
 		
-		assertNotNull(fields, Field[].class);
-		this.fields = Collections.unmodifiableList(Arrays.asList(fields));
+		this.fields = Collections.unmodifiableList(
+				Arrays.asList(fields == null? new Field[]{} :fields));
 	}
 	
 	private Fields(Collection<Field> fields) {
 		
-		assertNotNull(fields, Collection.class);
-		this.fields = Collections.unmodifiableCollection(fields);
+		this.fields = Collections.unmodifiableCollection(
+				fields == null? new ArrayList<Field>() :fields);
 	}
 	
 	/**
@@ -147,7 +144,10 @@ public final class Fields implements Iterable<Field> {
 	 */
 	public Fields annotatedWith(final Class<? extends Annotation> annotation) {
 		
-		assertNotNull(annotation, Class.class);
+		if(annotation == null) {
+			
+			return this;
+		}
 		
 		return new Fields(filter(new Criterion() {
 
@@ -172,7 +172,10 @@ public final class Fields implements Iterable<Field> {
 	 */
 	public Fields annotatedWithAll(final Class<? extends Annotation>... annotations) {
 		
-		assertNotNull(annotations, Class[].class);
+		if(annotations == null || annotations.length == 0) {
+			
+			return this;
+		}
 		
 		return new Fields(filter(new Criterion() {
 
@@ -208,7 +211,10 @@ public final class Fields implements Iterable<Field> {
 	 */
 	public Fields annotatedWithAny(final Class<? extends Annotation>... annotations) {
 		
-		assertNotNull(annotations, Class[].class);
+		if(annotations == null || annotations.length == 0) {
+			
+			return this;
+		}
 		
 		return new Fields(filter(new Criterion() {
 
@@ -241,7 +247,10 @@ public final class Fields implements Iterable<Field> {
 	 */
 	public Fields named(final String fieldName) {
 		
-		assertNotEmpty(fieldName.isEmpty());
+		if(fieldName == null || fieldName.isEmpty()) {
+			
+			return this;
+		}
 		
 		return new Fields(filter(new Criterion() {
 
@@ -266,7 +275,10 @@ public final class Fields implements Iterable<Field> {
 	 */
 	public Fields strictlyNamed(final String fieldName) {
 		
-		assertNotEmpty(fieldName);
+		if(fieldName == null || fieldName.isEmpty()) {
+			
+			return this;
+		}
 		
 		return new Fields(filter(new Criterion() {
 
@@ -291,7 +303,10 @@ public final class Fields implements Iterable<Field> {
 	 */
 	public Fields ofType(final Class<?> type) {
 		
-		assertNotEmpty(type);
+		if(type == null) {
+			
+			return this;
+		}
 		
 		return new Fields(filter(new Criterion() {
 
@@ -316,7 +331,10 @@ public final class Fields implements Iterable<Field> {
 	 */
 	public Fields strictlyOfType(final Class<?> type) {
 		
-		assertNotEmpty(type);
+		if(type == null) {
+			
+			return this;
+		}
 		
 		return new Fields(filter(new Criterion() {
 
@@ -354,7 +372,10 @@ public final class Fields implements Iterable<Field> {
 	 */
 	public Fields difference(Fields fields) {
 		
-		assertNotNull(fields);
+		if(fields == null) {
+			
+			return this;
+		}
 		
 		Set<Field> view = new HashSet<Field>(this.fields);
 		view.removeAll(new HashSet<Field>(fields.fields));
@@ -389,7 +410,10 @@ public final class Fields implements Iterable<Field> {
 	 */
 	public Fields union(Fields fields) {
 		
-		assertNotNull(fields);
+		if(fields == null) {
+			
+			return this;
+		}
 		
 		Set<Field> view = new HashSet<Field>(this.fields);
 		view.addAll(new HashSet<Field>(fields.fields));
@@ -423,7 +447,10 @@ public final class Fields implements Iterable<Field> {
 	 */
 	public Fields intersection(Fields fields) {
 		
-		assertNotNull(fields);
+		if(fields == null) {
+			
+			return this;
+		}
 		
 		Set<Field> view = new HashSet<Field>(this.fields);
 		view.retainAll(new HashSet<Field>(fields.fields));
