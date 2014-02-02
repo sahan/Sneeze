@@ -22,6 +22,7 @@ package com.lonepulse.sneeze.reflection;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -235,8 +236,8 @@ public final class Fields implements Iterable<Field> {
 	}
 	
 	/**
-	 * <p>Filters the {@link Field}s whose name equals (case-sensitive) the given name and returns a new 
-	 * instance of {@link Fields} that wrap the filtered collection.</p> 
+	 * <p>Filters the {@link Field}s whose <b>case insensitive</b> name equals the given name and returns 
+	 * a new instance of {@link Fields} that wrap the filtered collection.</p> 
 	 *
 	 * @param fieldName
 	 * 			the {@link Field}s having this name will be filtered
@@ -257,13 +258,13 @@ public final class Fields implements Iterable<Field> {
 			@Override
 			public boolean evaluate(Field field) {
 				
-				return field.getName().equals(fieldName);
+				return field.getName().equalsIgnoreCase(fieldName);
 			}
 		}));
 	}
 	
 	/**
-	 * <p>Filters the {@link Field}s whose <b>case insensitive</b> name equals the given name and returns 
+	 * <p>Filters the {@link Field}s whose <b>case sensitive</b> name equals the given name and returns 
 	 * a new instance of {@link Fields} that wrap the filtered collection. 
 	 *
 	 * @param fieldName
@@ -285,7 +286,7 @@ public final class Fields implements Iterable<Field> {
 			@Override
 			public boolean evaluate(Field field) {
 				
-				return field.getName().equalsIgnoreCase(fieldName);
+				return field.getName().equals(fieldName);
 			}
 		}));
 	}
@@ -475,7 +476,27 @@ public final class Fields implements Iterable<Field> {
 	}
 	
 	/**
-	 * <p>Allows the {@link Field}s envelopped by this instance of {@link Fields} to be traversed 
+	 * <p>Creates a collection of {@link Classes} from the {@link Field} types in this instance.</p>
+	 *
+	 * @return an unmodifiable collection of {@link Classes} which groups all the {@link Field} types 
+	 * 		   for each of the {@link Method}s
+	 *
+	 * @since 0.1.0
+	 */
+	public Collection<Classes> types() {
+		
+		List<Classes> classesOfTypes = new ArrayList<Classes>();
+		
+		for(Field field : this) {
+			
+			classesOfTypes.add(Classes.from(Arrays.<Class<?>>asList(field.getType())));
+		}
+		
+		return Collections.unmodifiableList(classesOfTypes);
+	}
+	
+	/**
+	 * <p>Allows the {@link Field}s enveloped by this instance of {@link Fields} to be traversed 
 	 * sequentially using the returned {@link Iterator}.</p> 
 	 * 
 	 * <p><b>Note</b> this {@link Iterator} does not allow the underlying {@link Field}s to be modified, 
