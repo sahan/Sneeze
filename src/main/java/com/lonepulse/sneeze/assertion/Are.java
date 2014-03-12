@@ -1,7 +1,6 @@
 package com.lonepulse.sneeze.assertion;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 /*
  * #%L
@@ -23,50 +22,53 @@ import java.util.List;
  * #L%
  */
 
-final class TestSuite {
+public final class Are implements Criteria<Are> {
 
 	
-	private List<Test> tests;
-	private Fixture fixture;
-	private Results results;
+	private Asserter asserter;
 	
 	
-	TestSuite(Fixture fixture) {
+	static Are with(Fixture fixture) {
+		
+		return new Are(new Asserter(fixture));
+	}
 	
-		this.fixture = fixture;
-		this.tests = new ArrayList<Test>();
+	private Are(Asserter asserter) {
+	
+		this.asserter = asserter;
+	}
+	
+	@Override
+	public Are notNull() {
+		
+		asserter.fixture().addAssertion(new Assertion() {
+			
+			@Override
+			public boolean on(Object target) {
+			
+				return target == null;
+			}
+		});
+		
+		return this;
+	}
+	
+	public Are notEmpty() {
+	
+		asserter.fixture().addAssertion(new Assertion() {
+			
+			@Override
+			public boolean on(Object target) {
+				
+				return target instanceof Collection && ((Collection<?>)target).isEmpty();
+			}
+		});
+		
+		return this;
 	}
 
-	void prepare() {
+	@Override
+	public void go() {
 		
-		for (Object target : fixture.getTargets()) {
-			
-			for (Assertion assertion : fixture.getAssertions()) {
-				
-				tests.add(new Test(target, assertion));
-			}
-		}
-	}
-	
-	void execute() {
-		
-		Results results = new Results();
-		
-		for (Test test : tests) {
-			
-			if(test.run()) {
-				
-				results.addPassed(test);
-			}
-			else {
-				
-				results.addFailed(test);
-			}
-		}
-	}
-	
-	Results getResults() {
-		
-		return results;
 	}
 }

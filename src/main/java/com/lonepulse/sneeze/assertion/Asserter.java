@@ -1,9 +1,5 @@
 package com.lonepulse.sneeze.assertion;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 /*
  * #%L
  * Sneeze
@@ -24,41 +20,26 @@ import java.util.List;
  * #L%
  */
 
-public final class Results {
+public final class Asserter {
 
 	
-	private List<Test> passed;
-	private List<Test> failed;
+	private Fixture fixture;
 	
 	
-	Results() {
+	Asserter(Fixture fixture) {
 		
-		this.passed = new ArrayList<Test>();
-		this.failed = new ArrayList<Test>();
+		this.fixture = fixture;
 	}
 	
-	void addPassed(Test test) {
+	protected Fixture fixture() {
 		
-		passed.add(test);
+		return this.fixture;
 	}
 	
-	void addFailed(Test test) {
-
-		failed.add(test);
-	}
-	
-	public boolean isSuccessful() {
+	public Asserter run() {
 		
-		return failed.isEmpty();
-	}
-	
-	public List<Test> getPassed() {
+		//TODO direct assertion execution
 		
-		return Collections.unmodifiableList(passed);
-	}
-	
-	public List<Test> getFailed() {
-		
-		return Collections.unmodifiableList(failed);
+		return this;
 	}
 }

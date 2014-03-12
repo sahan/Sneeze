@@ -20,10 +20,9 @@ package com.lonepulse.sneeze.assertion;
  * #L%
  */
 
-public interface Criteria<T extends Criteria<T>> {
+interface Criteria<T extends Criteria<T>> {
 
 	T notNull();
-	T assignable(final Class<?> type);
 	
-	Results test();
+	void go();
 }

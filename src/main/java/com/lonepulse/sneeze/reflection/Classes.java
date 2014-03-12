@@ -32,8 +32,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import com.lonepulse.sneeze.assertion.Assert;
-
 /**
  * <p>Fluent filtering for a collection of {@link Class}es.</p> 
  * 
@@ -268,7 +266,7 @@ public final class Classes implements Iterable<Class<?>> {
 	public Classes fullyNamed(final String fullyQualifiedClassName) {
 		
 		if(fullyQualifiedClassName == null || fullyQualifiedClassName.isEmpty()) {
-			Assert.that(null).is().go();
+			
 			return this;
 		}
 		

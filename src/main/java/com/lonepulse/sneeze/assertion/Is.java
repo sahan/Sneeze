@@ -20,21 +20,26 @@ package com.lonepulse.sneeze.assertion;
  * #L%
  */
 
-final class Is implements Criteria<Is> {
+public final class Is implements Criteria<Is> {
 
 	
-	private Fixture fixture; 
+	private Asserter asserter;
 	
 	
-	Is(Fixture fixture) {
+	static Is with(Fixture fixture) {
+		
+		return new Is(new Asserter(fixture));
+	}
 	
-		this.fixture = fixture;
+	private Is(Asserter asserter) {
+	
+		this.asserter = asserter;
 	}
 	
 	@Override
 	public Is notNull() {
 		
-		fixture.addAssertion(new Assertion() {
+		asserter.fixture().addAssertion(new Assertion() {
 			
 			@Override
 			public boolean on(Object target) {
@@ -46,10 +51,9 @@ final class Is implements Criteria<Is> {
 		return this;
 	}
 	
-	@Override
 	public Is assignable(final Class<?> type) {
 	
-		fixture.addAssertion(new Assertion() {
+		asserter.fixture().addAssertion(new Assertion() {
 			
 			@Override
 			public boolean on(Object target) {
@@ -62,8 +66,7 @@ final class Is implements Criteria<Is> {
 	}
 
 	@Override
-	public Results test() {
+	public void go() {
 		
-		return new Runner(fixture).run();
 	}
 }
