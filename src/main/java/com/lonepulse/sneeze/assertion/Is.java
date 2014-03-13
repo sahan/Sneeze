@@ -66,7 +66,8 @@ public final class Is implements Criteria<Is> {
 	}
 
 	@Override
-	public void go() {
+	public boolean go() {
 		
+		return asserter.run();
 	}
 }

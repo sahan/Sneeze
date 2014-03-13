@@ -27,8 +27,6 @@ import java.util.List;
 public final class Assert {
 	
 	
-//	private final Fixture fixture;
-	
 	private List<Object> targets;
 	
 	

@@ -36,10 +36,19 @@ public final class Asserter {
 		return this.fixture;
 	}
 	
-	public Asserter run() {
+	public boolean run() {
 		
-		//TODO direct assertion execution
+		for(Object target : fixture.getTargets()) {
+			
+			for(Assertion assertion : fixture.getAssertions()) {
+				
+				if(!assertion.on(target)) {
+					
+					return false;
+				}
+			}
+		}
 		
-		return this;
+		return true;
 	}
 }

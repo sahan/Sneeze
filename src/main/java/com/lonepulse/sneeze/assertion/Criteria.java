@@ -24,5 +24,5 @@ interface Criteria<T extends Criteria<T>> {
 
 	T notNull();
 	
-	void go();
+	boolean go();
 }
