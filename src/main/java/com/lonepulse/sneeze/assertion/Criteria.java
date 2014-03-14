@@ -24,5 +24,7 @@ interface Criteria<T extends Criteria<T>> {
 
 	T notNull();
 	
+	T valid(Assertion assertion);
+	
 	boolean go();
 }

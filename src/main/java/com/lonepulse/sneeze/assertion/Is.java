@@ -51,6 +51,14 @@ public final class Is implements Criteria<Is> {
 		return this;
 	}
 	
+	@Override
+	public Is valid(Assertion assertion) {
+		
+		asserter.fixture().addAssertion(assertion);
+		
+		return this;
+	}
+	
 	public Is assignable(final Class<?> type) {
 	
 		asserter.fixture().addAssertion(new Assertion() {
@@ -59,6 +67,20 @@ public final class Is implements Criteria<Is> {
 			public boolean on(Object target) {
 				
 				return type.isAssignableFrom(target.getClass());
+			}
+		});
+		
+		return this;
+	}
+	
+	public Is equalTo(final Object object) {
+		
+		asserter.fixture().addAssertion(new Assertion() {
+			
+			@Override
+			public boolean on(Object target) {
+				
+				return target.equals(object);
 			}
 		});
 		

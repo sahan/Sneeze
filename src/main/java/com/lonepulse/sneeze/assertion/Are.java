@@ -52,6 +52,14 @@ public final class Are implements Criteria<Are> {
 		
 		return this;
 	}
+
+	@Override
+	public Are valid(Assertion assertion) {
+		
+		asserter.fixture().addAssertion(assertion);
+		
+		return this;
+	}
 	
 	public Are notEmpty() {
 	
@@ -61,6 +69,28 @@ public final class Are implements Criteria<Are> {
 			public boolean on(Object target) {
 				
 				return target instanceof Collection && ((Collection<?>)target).isEmpty();
+			}
+		});
+		
+		return this;
+	}
+	
+	public Are deepEqualTo(final Collection<?> collection) {
+		
+		asserter.fixture().addAssertion(new Assertion() {
+			
+			@Override
+			public boolean on(Object target) {
+				
+				if(!(target instanceof Collection)) {
+					
+					return false;
+				}
+				
+				Collection<?> targetCollection = ((Collection<?>)target);
+				
+				return targetCollection.size() == collection.size() && 
+					   targetCollection.containsAll(collection);
 			}
 		});
 		
